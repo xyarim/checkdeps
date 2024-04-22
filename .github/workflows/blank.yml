@@ -1,8 +1,12 @@
 name: Build and Distribute APK
 
+# on:
+#   pull_request_review:
+#     types: [submitted]
+#     branches:
+#       - main
 on:
-  pull_request_review:
-    types: [submitted]
+  pull_request:
     branches:
       - main
 
