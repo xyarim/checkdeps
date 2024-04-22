@@ -46,16 +46,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-build-
 
-      - name: Authenticate with Firebase
-        uses: w9jds/firebase-action@master
-        with:
-          args: login:ci
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-
       - name: Distribute APK to Firebase
         uses: w9jds/firebase-action@master
         with:
-          args: appdistribution:distribute build/app/outputs/apk/release/app-release.apk --app ${{ secrets.FIREBASE_APP_ID }} --groups testers
+          args: appdistribution:distribute build/app/outputs/apk/release/app-debug.apk --app ${{ secrets.FIREBASE_APP_ID }} --groups qa-team
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
