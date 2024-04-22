@@ -12,7 +12,7 @@ on:
 
 jobs:
   build:
-    if: github.event.review.state == 'approved'
+    #if: github.event.review.state == 'approved'
     runs-on: ubuntu-latest
     environment: ci
     steps:
