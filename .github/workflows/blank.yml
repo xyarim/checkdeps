@@ -49,12 +49,12 @@ jobs:
       - name: Prepare release notes
         id: prepare-notes
         run: |
-          RELEASE_NOTES=$(echo "${{ github.event.pull_request.body }}" | sed 's/"/\\"/g' | sed "s/'/\\'/g")
-          echo "RELEASE_NOTES=$RELEASE_NOTES" >> $GITHUB_ENV
+          RELEASE_NOTES_BASE64=$(echo "${{ github.event.pull_request.body }}" | base64)
+          echo "RELEASE_NOTES_BASE64=$RELEASE_NOTES_BASE64" >> $GITHUB_ENV
 
       - name: Distribute APK to Firebase
         uses: w9jds/firebase-action@master
         with:
-          args: appdistribution:distribute app/build/outputs/apk/debug/app-debug.apk --app ${{ secrets.FIREBASE_APP_ID }} --groups qa-team --release-notes "$RELEASE_NOTES"
+          args: appdistribution:distribute app/build/outputs/apk/debug/app-debug.apk --app ${{ secrets.FIREBASE_APP_ID }} --groups qa-team --release-notes "$(echo $RELEASE_NOTES_BASE64 | base64 --decode)"
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
