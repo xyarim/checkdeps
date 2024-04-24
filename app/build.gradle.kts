@@ -8,7 +8,7 @@ android {
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.xyarim.artifactstestdeps"
+        applicationId = "com.xyarim.testciapp"
         minSdk = 24
         targetSdk = 34
         versionCode = 3
