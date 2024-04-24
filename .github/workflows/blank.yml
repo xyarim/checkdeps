@@ -45,16 +45,17 @@ jobs:
           key: ${{ runner.os }}-build-${{ github.sha }}
           restore-keys: |
             ${{ runner.os }}-build-
+
       - name: Extract PR description
         id: pr_description
         run: |
-          PR_DESCRIPTION=$(jq --raw-output .pull_request.body $GITHUB_EVENT_PATH)
+          PR_DESCRIPTION=$(jq --raw-output .pull_request.body $GITHUB_EVENT_PATH | sed 's/[][()]/_/g')
           echo "PR description: $PR_DESCRIPTION"
           echo "::set-output name=description::$PR_DESCRIPTION"
 
       - name: Distribute APK to Firebase
         uses: w9jds/firebase-action@v13.7.2
         with:
-          args: appdistribution:distribute app/build/outputs/apk/debug/app-debug.apk --app ${{ secrets.FIREBASE_APP_ID }} --groups qa-team --release-notes "test pull reqqqq"
+          args: appdistribution:distribute app/build/outputs/apk/debug/app-debug.apk --app ${{ secrets.FIREBASE_APP_ID }} --groups qa-team --release-notes ${{ steps.pr_description.outputs.description }}
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
